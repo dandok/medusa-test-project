@@ -14,19 +14,22 @@ class ProductService extends BaseService {
     return await this.productRepository_.find();
   }
 
-  async getProduct(batch_no: string): Promise<Product> {
-    return await this.productRepository_.findOne({
+  async getProduct(batch_no: string): Promise<Product[] | undefined> {
+    const product = await this.productRepository_.find({
       where: {
-        batch_no
-      }
-    })
+        batch_no,
+      },
+    });
+
+    if (!product) return null;
+    return product;
   }
 
-  async addProducts(req, data: ProductExtentionInput) {
+  async addProducts(req, data: ProductExtentionInput): Promise<Product> {
     const product = await this.productRepository_.findOne({
       where: { id: data.id },
     });
-    if (product.id === data.id) {
+    if (product?.id === data?.id) {
       throw new Error('Product exists already');
     }
 

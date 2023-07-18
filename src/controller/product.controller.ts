@@ -6,7 +6,7 @@ class ProductController {
     const productsService = req.scope.resolve('productService');
     res.json({
       status: 200,
-      products: await productsService.getProducts(req) as Product[],
+      products: (await productsService.getProducts(req)) as Product[],
     });
   }
 
@@ -15,14 +15,14 @@ class ProductController {
     const id = req.params.batch_no;
     res.json({
       status: 200,
-      product: await productsService.getProduct(id) as Product[]
-    })
+      product: (await productsService.getProduct(id)) as Product[],
+    });
   }
 
   async addProduct(req: Request, res: Response) {
     const data = req.body;
     const productsService = req.scope.resolve('productService');
-    const product = await productsService.addProducts(req, data) as Product;
+    const product = (await productsService.addProducts(req, data)) as Product;
     res.json({
       status: 201,
       product,
